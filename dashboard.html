@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Dashboard — Kathi Roll Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/customer.css"/>
+<style>
+body { background: var(--cream); color: #1a1a1a; display:block; padding-bottom:80px; }
+/* ══ HERO ══════════════════════════════════════════════ */
+.dash-hero {
+padding: 20px 18px 48px;
+position: relative; overflow: hidden;
+transition: background 0.3s;
+}
+.dash-hero.returning { background: var(--black); }
+.dash-hero.first-time { background: linear-gradient(160deg,var(--red) 0%,var(--orange) 100%); }
+.dash-hero { background: var(--black); }
+.dash-hero::before {
+content: ''; position: absolute; inset: 0; pointer-events: none;
+background-image: repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(255,255,255,0.013) 28px,rgba(255,255,255,0.013) 29px);
+}
+.dash-hero::after {
+content: ''; position: absolute; bottom: -22px; left:0; right:0;
+height: 44px; background: var(--cream);
+border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.hero-inner { position: relative; z-index: 1; }
+.hero-top-row {
+display: flex; justify-content: space-between; align-items: center;
+margin-bottom: 18px;
+}
+.brand-sm {
+font-family: var(--font-hd); font-size: 13px;
+color: #2a2a2a; letter-spacing: 1.5px;
+}
+.btn-logout {
+background: #161616; border: 1px solid #222; color: #555;
+font-family: var(--font); font-size: 12px; font-weight: 800;
+padding: 7px 14px; border-radius: 99px; cursor: pointer;
+touch-action: manipulation; transition: color 0.15s;
+}
+.btn-logout:active { color: #fff; }
+.hero-greeting { font-size: 12px; color: #3a3a3a; font-weight: 600; margin-bottom: 4px; }
+.hero-name {
+font-family: var(--font-hd); font-size: 28px; color: var(--white);
+margin-bottom: 14px; line-height: 1.1;
+}
+.pts-pill {
+display: inline-flex; align-items: center; gap: 8px;
+background: #111; border: 1.5px solid #222; border-radius: 99px;
+padding: 9px 18px;
+}
+.pts-pill .star { font-size: 15px; }
+.pts-val {
+font-family: var(--font-hd); font-size: 22px;
+color: var(--yellow); line-height: 1;
+}
+.pts-lbl { font-size: 12px; color: #444; font-weight: 700; }
+#first-banner {
+display: none;
+background: rgba(255,255,255,0.1);
+border-radius: 14px; padding: 12px 14px;
+margin-top: 14px;
+align-items: center; gap: 10px;
+border: 1px solid rgba(255,255,255,0.15);
+animation: slide-up 0.4s ease both;
+}
+#first-banner .fb-icon { font-size: 24px; flex-shrink: 0; }
+#first-banner .fb-text { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); }
+/* ══ BODY ══════════════════════════════════════════════ */
+.body {
+max-width: 480px; margin: 0 auto;
+padding: 26px 14px 40px;
+}
+.stats {
+display: grid; grid-template-columns: repeat(3,1fr);
+gap: 8px; margin-bottom: 18px;
+}
+.stat {
+background: #fff; border-radius: 14px; padding: 14px 8px;
+text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.stat .sv {
+font-family: var(--font-hd); font-size: 24px;
+color: #1a1a1a; line-height: 1; margin-bottom: 4px;
+}
+.stat .sv.r { color: var(--red); }
+.stat .sl { font-size: 10px; color: #bbb; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; }
+#offer-banner {
+display: none;
+background: #fff8cc; border: 2px solid var(--yellow);
+border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;
+align-items: center; gap: 12px;
+animation: slide-up 0.35s ease both;
+}
+#offer-banner .ob-icon { font-size: 28px; flex-shrink: 0; }
+#offer-banner h3 { font-size: 14px; font-weight: 800; color: #1a1a1a; margin-bottom: 2px; }
+#offer-banner p { font-size: 12px; color: #888; font-weight: 600; }
+.sec {
+font-size: 10px; font-weight: 800; letter-spacing: .16em;
+text-transform: uppercase; color: var(--red);
+display: flex; align-items: center; gap: 8px;
+margin-bottom: 10px; margin-top: 20px;
+}
+.sec:first-of-type { margin-top: 0; }
+.sec::after { content:''; flex:1; height:1px; background:#ddd; }
+.show-more-btn {
+width: 100%; background: #fff; border: 1.5px solid #efefef;
+border-radius: 12px; padding: 11px; margin-top: 8px;
+font-family: var(--font); font-size: 12.5px; font-weight: 800;
+color: var(--red); cursor: pointer; touch-action: manipulation;
+display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.show-more-btn:active { background: #fff5f5; }
+.cat-tabs-wrap {
+display: flex; gap: 8px; overflow-x: auto;
+padding-bottom: 4px; margin-bottom: 12px;
+scrollbar-width: none;
+}
+.cat-tabs-wrap::-webkit-scrollbar { display: none; }
+.cat-tab {
+flex-shrink: 0; background: #fff; border: 1.5px solid #efefef;
+border-radius: 99px; padding: 8px 16px;
+font-family: var(--font); font-size: 12.5px; font-weight: 800;
+color: #888; cursor: pointer; touch-action: manipulation;
+transition: all .15s; white-space: nowrap;
+}
+.cat-tab.on {
+background: var(--yellow); border-color: var(--yellow); color: #1a1a1a;
+}
+.coupon-wrap {
+background: #fff; border-radius: 18px;
+overflow: hidden; position: relative;
+margin-bottom: 6px;
+box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+}
+.coupon-wrap::before,.coupon-wrap::after {
+content:''; position:absolute; width:18px; height:18px;
+border-radius:50%; background:var(--cream);
+top:50%; transform:translateY(-50%); z-index:2;
+}
+.coupon-wrap::before { left:-9px; }
+.coupon-wrap::after { right:-9px; }
+.coupon-inner { display:flex; align-items:stretch; }
+.c-tab {
+width:64px; flex-shrink:0; background:#fff5f5;
+border-right:1.5px dashed #f0e0e0;
+display:flex; flex-direction:column;
+align-items:center; justify-content:center;
+padding:16px 4px; gap:2px;
+}
+.c-tab .ctv {
+font-family:var(--font-hd); font-size:15px;
+color:var(--red); text-align:center; line-height:1.1;
+}
+.c-tab .cts {
+font-size:9px; font-weight:800; color:#e57373;
+text-transform:uppercase; letter-spacing:.06em; margin-top:3px;
+}
+.c-body { flex:1; padding:16px 14px; }
+.c-title{ font-size:14px; font-weight:800; color:#1a1a1a; margin-bottom:3px; }
+.c-desc { font-size:11.5px; color:#bbb; font-weight:600; margin-bottom:12px; line-height:1.5; }
+.code-row {
+background:#f8f8f8; border:1.5px dashed #e0e0e0; border-radius:10px;
+padding:9px 12px; display:flex; align-items:center;
+justify-content:space-between; gap:8px;
+}
+.code-val {
+font-family:var(--font-hd); font-size:16px;
+letter-spacing:3px; color:#1a1a1a;
+}
+.c-valid { font-size:10.5px; color:#ddd; font-weight:700; margin-top:8px; }
+.streak-card {
+background:#fff; border-radius:18px; padding:18px 16px;
+box-shadow:0 2px 10px rgba(0,0,0,.05); margin-bottom:2px;
+}
+.streak-top {
+display:flex; justify-content:space-between;
+align-items:flex-start; margin-bottom:14px;
+}
+.streak-top h3 { font-size:15px; font-weight:800; color:#1a1a1a; }
+.streak-top p { font-size:12px; color:#bbb; font-weight:600; margin-top:3px; }
+.s-badge {
+background:#fff8e1; color:#9a7000;
+font-size:12px; font-weight:800;
+padding:5px 13px; border-radius:99px; white-space:nowrap; flex-shrink:0;
+}
+.dots { display:flex; gap:7px; }
+.dot { flex:1; height:10px; border-radius:99px; background:#f0f0f0; transition:background .3s; }
+.dot.done { background:var(--yellow); }
+.dot.goal { background:var(--green); }
+.s-msg { font-size:12.5px; color:#bbb; font-weight:700; margin-top:10px; }
+.s-msg.win { color:var(--green); font-weight:800; }
+.ref-card {
+background:var(--black); border-radius:18px; padding:20px 16px;
+}
+.ref-card h3 { font-size:16px; font-weight:800; color:var(--yellow); margin-bottom:5px; }
+.ref-card p { font-size:12.5px; color:#444; font-weight:600; margin-bottom:16px; }
+.ref-tiers { display:flex; gap:8px; margin-bottom:16px; }
+.ref-tier {
+flex:1; background:#141414; border:1.5px solid #1e1e1e;
+border-radius:14px; padding:12px 6px; text-align:center;
+}
+.ref-tier.done { border-color:var(--green); background:#061206; }
+.rt-num { font-family:var(--font-hd); font-size:22px; color:#2a2a2a; margin-bottom:3px; }
+.ref-tier.done .rt-num { color:var(--green); }
+.rt-pts { font-size:11px; color:#2a2a2a; font-weight:800; }
+.ref-tier.done .rt-pts { color:#1a9a1a; }
+.btn-ref {
+width:100%; background:var(--yellow); color:var(--black);
+font-family:var(--font); font-size:15px; font-weight:800;
+padding:15px; border:none; border-radius:14px; cursor:pointer;
+display:flex; align-items:center; justify-content:center; gap:7px;
+touch-action:manipulation; transition:transform .12s;
+}
+.btn-ref:active { transform:scale(.98); }
+.fb-card {
+background:#fff; border-radius:18px; padding:18px 16px;
+box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+.fb-note { font-size:12px; color:#bbb; font-weight:600; margin-bottom:14px; }
+.fb-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; }
+.fb-btn {
+background:#f7f7f7; border:1.5px solid #efefef; border-radius:14px;
+padding:13px 8px; font-family:var(--font); font-size:13px;
+font-weight:800; color:#555;
+display:flex; align-items:center; justify-content:center; gap:5px;
+cursor:pointer; touch-action:manipulation; transition:all .12s;
+}
+.fb-btn:active { background:#fff0f0; border-color:var(--red); color:var(--red); transform:scale(.97); }
+.fb-foot { font-size:11px; color:#ddd; font-weight:700; text-align:center; }
+.btn-logout-full {
+width:100%; background:transparent; color:#ccc;
+font-family:var(--font); font-size:14px; font-weight:700;
+padding:15px; border:1.5px solid #e8e8e8; border-radius:14px;
+cursor:pointer; touch-action:manipulation; transition:all .15s;
+margin-top:8px;
+}
+.btn-logout-full:active { border-color:var(--red); color:var(--red); }
+.sheet-ov {
+position:fixed; inset:0; background:rgba(0,0,0,.5);
+z-index:100; opacity:0; pointer-events:none; transition:opacity .25s;
+}
+.sheet-ov.open { opacity:1; pointer-events:all; }
+.sheet-box {
+position:absolute; bottom:0; left:0; right:0;
+background:#fff; border-radius:24px 24px 0 0;
+padding:10px 18px 44px;
+transform:translateY(100%);
+transition:transform .3s cubic-bezier(.32,.72,0,1);
+}
+.sheet-ov.open .sheet-box { transform:translateY(0); }
+.sh-handle { width:40px; height:4px; background:#e4e4e4; border-radius:99px; margin:8px auto 16px; }
+.sh-h3 { font-size:18px; font-weight:800; color:#1a1a1a; margin-bottom:4px; }
+.sh-p { font-size:13px; color:#bbb; font-weight:600; margin-bottom:14px; }
+.sh-ta {
+width:100%; background:#f7f7f7; border:1.5px solid #efefef;
+border-radius:14px; font-family:var(--font); font-size:15px;
+color:#1a1a1a; padding:14px; resize:none; outline:none; height:120px;
+}
+.sh-ta:focus { border-color:#ccc; }
+.sh-btns { display:flex; gap:10px; margin-top:12px; }
+.sh-cancel {
+flex:1; background:#f0f0f0; color:#888;
+font-family:var(--font); font-size:15px; font-weight:800;
+border:none; border-radius:14px; padding:15px; cursor:pointer;
+}
+.sh-send {
+flex:2; background:var(--red); color:#fff;
+font-family:var(--font); font-size:15px; font-weight:800;
+border:none; border-radius:14px; padding:15px; cursor:pointer;
+touch-action:manipulation; transition:transform .12s;
+}
+.sh-send:active { transform:scale(.98); }
+
+/* ══ BOTTOM NAV ════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; border-top: 1.5px solid #f0f0f0;
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 8px 0 16px; z-index: 150;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+}
+.bn-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 4px 16px;
+  border-radius: 12px; touch-action: manipulation;
+}
+.bn-icon { font-size: 22px; line-height: 1; }
+.bn-label { font-size: 10px; font-weight: 700; color: #bbb; }
+.bn-item.active .bn-label { color: var(--red, #e53935); font-weight: 800; }
+
+/* ══ QR SCREEN ══════════════════════════════════════════ */
+#qr-screen {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 80px;
+  background: var(--cream, #fffdf7); z-index: 50;
+  overflow-y: auto; padding: 32px 20px 20px;
+}
+#qr-screen.active { display: block; }
+.qr-top-label {
+  text-align: center; margin-bottom: 6px;
+  font-size: 11px; font-weight: 800; color: #bbb;
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.qr-card {
+  background: #fff; border-radius: 24px; padding: 28px 20px 24px;
+  text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.08); margin-bottom: 16px;
+}
+.qr-logo { font-size: 11px; font-weight: 800; color: #bbb; letter-spacing: 2px; margin-bottom: 4px; text-transform: uppercase; }
+.qr-member-name { font-family: var(--font-hd, sans-serif); font-size: 24px; font-weight: 800; color: #1a1a1a; margin-bottom: 20px; }
+#qr-canvas-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+#qr-canvas-wrap canvas { border-radius: 12px; padding: 10px; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.qr-stats { display: flex; justify-content: center; gap: 32px; }
+.qr-stat { text-align: center; }
+.qr-stat-val { font-family: var(--font-hd, sans-serif); font-size: 24px; font-weight: 800; color: #1a1a1a; }
+.qr-stat-lbl { font-size: 11px; color: #bbb; font-weight: 700; }
+.qr-hint {
+  background: #fff8e1; border: 1.5px solid #ffe58f; border-radius: 14px;
+  padding: 14px 16px; text-align: center; font-size: 13px;
+  font-weight: 700; color: #9a7000; line-height: 1.6;
+}
+
+/* ══ PROFILE SCREEN ════════════════════════════════════ */
+#profile-screen {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 80px;
+  background: var(--cream, #fffdf7);
+  z-index: 50; overflow-y: auto;
+  padding: 24px 16px 20px;
+}
+#profile-screen.active { display: block; }
+.profile-header {
+  text-align: center; margin-bottom: 24px;
+}
+.profile-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--black, #1a1a1a);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin: 0 auto 12px;
+}
+.profile-name-big {
+  font-family: var(--font-hd, sans-serif);
+  font-size: 22px; font-weight: 800; color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.profile-mobile {
+  font-size: 13px; color: #bbb; font-weight: 600;
+}
+.profile-card {
+  background: #fff; border-radius: 18px;
+  padding: 18px 16px; margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+.profile-card-title {
+  font-size: 11px; font-weight: 800; color: #bbb;
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: 14px;
+}
+.profile-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #f5f5f5;
+}
+.profile-row:last-child { border-bottom: none; }
+.profile-row-left { display: flex; align-items: center; gap: 10px; }
+.profile-row-icon { font-size: 18px; }
+.profile-row-label { font-size: 13px; font-weight: 700; color: #555; }
+.profile-row-value { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+.profile-edit-btn {
+  background: #f5f5f5; border: none; border-radius: 8px;
+  padding: 6px 12px; font-size: 12px; font-weight: 700;
+  color: #555; cursor: pointer; touch-action: manipulation;
+}
+.profile-edit-btn:active { background: #ffe58f; }
+.profile-inp {
+  width: 100%; background: #f7f7f7; border: 1.5px solid #e8e8e8;
+  border-radius: 10px; font-family: var(--font); font-size: 14px;
+  font-weight: 600; padding: 10px 12px; outline: none; color: #1a1a1a;
+  box-sizing: border-box; margin-top: 6px;
+}
+.profile-inp:focus { border-color: var(--yellow, #FFD600); }
+.profile-save-btn {
+  width: 100%; background: var(--red, #e53935); color: #fff;
+  border: none; border-radius: 12px; padding: 14px;
+  font-family: var(--font); font-size: 15px; font-weight: 800;
+  cursor: pointer; margin-top: 8px; touch-action: manipulation;
+}
+.profile-save-btn:active { opacity: .85; }
+.insta-btn {
+  width: 100%; background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+  color: #fff; border: none; border-radius: 12px; padding: 14px;
+  font-family: var(--font); font-size: 15px; font-weight: 800;
+  cursor: pointer; margin-top: 8px; touch-action: manipulation;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.insta-done-badge {
+  background: #dcfce7; color: #166534; font-size: 12px;
+  font-weight: 800; padding: 4px 10px; border-radius: 99px;
+}
+</style>
+</head>
+<body>
+<!-- ══ HERO ════════════════════════════════════════════════ -->
+<div class="dash-hero" id="dash-hero">
+<div class="hero-inner">
+<div class="hero-top-row">
+<div class="brand-sm">KATHI ROLL HUB</div>
+<button class="btn-logout" onclick="window._dashLogout()">Logout</button>
+</div>
+<div class="hero-greeting" id="dash-greeting">Namaste 👋</div>
+<div class="hero-name" id="dash-name">...</div>
+<div class="pts-pill">
+<span class="star">⭐</span>
+<span class="pts-val" id="dash-pts">0</span>
+<span class="pts-lbl">Points</span>
+</div>
+<div id="first-banner">
+<div class="fb-icon">🎉</div>
+<div class="fb-text">Welcome to the Loyalty Club! ₹200 cashback add ho gaya.</div>
+</div>
+</div>
+</div>
+<!-- ══ BODY ════════════════════════════════════════════════ -->
+<div class="body">
+<div class="stats">
+<div class="stat"><div class="sv" id="stat-visits">0</div><div class="sl">Visits</div></div>
+<div class="stat"><div class="sv r" id="stat-saved">₹0</div><div class="sl">Bachaya</div></div>
+<div class="stat"><div class="sv" id="stat-refs">0</div> <div class="sl">Referrals</div></div>
+</div>
+<div id="offer-banner">
+<div class="ob-icon" id="banner-icon">🎁</div>
+<div>
+<h3 id="banner-title">Special Offer!</h3>
+<p id="banner-sub">Aaj ke liye</p>
+</div>
+</div>
+<!-- ACTIVE REWARDS from Admin -->
+<div id="rewards-section" style="display:none">
+<div class="sec">🎁 Active Offers</div>
+<div id="rewards-list"></div>
+</div>
+<!-- REWARDS HISTORY -->
+<div id="rewards-history-section" style="display:none">
+<div id="rewards-savings-banner" style="background:linear-gradient(135deg,#fff8e1,#fffbf0);border:1.5px solid #ffe58f;border-radius:16px;padding:16px;margin-bottom:10px;text-align:center">
+<div style="font-size:11px;font-weight:800;color:#9a7000;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Total Savings</div>
+<div id="rewards-total-saved" style="font-family:var(--font-hd);font-size:28px;color:#1a1a1a">₹0</div>
+<div style="font-size:12px;color:#aaa;font-weight:600;margin-top:2px">Offers redeem karke abhi tak bachaye</div>
+</div>
+<button id="rewards-history-toggle" style="width:100%;background:#fff;border:1.5px solid #efefef;border-radius:14px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:var(--font);touch-action:manipulation">
+<span style="font-size:13px;font-weight:800;color:#555">📜 Mera Rewards History</span>
+<span id="rewards-history-arrow" style="font-size:13px;color:#bbb;transition:transform .2s">▼</span>
+</button>
+<div id="rewards-history-list" style="display:none;margin-top:8px"></div>
+</div>
+<!-- MENU -->
+<div id="menu-section" style="display:none">
+<div class="sec">🌯 Hamara Menu</div>
+<div id="menu-search-wrap"></div>
+<div class="cat-tabs-wrap" id="menu-cat-tabs"></div>
+<div id="menu-list"></div>
+</div>
+<!-- COUPON -->
+<div id="coupon-wrap-sec">
+<div class="sec">🎟️ Mera Discount</div>
+<div class="coupon-wrap">
+<div class="coupon-inner">
+<div class="c-tab">
+<div class="ctv" id="coupon-pct">10%<br>OFF</div>
+<div class="cts" id="coupon-label">Welcome</div>
+</div>
+<div class="c-body">
+<div class="c-title">Welcome Discount</div>
+<div class="c-desc">Counter pe yeh code dikhao — har order pe!</div>
+<div class="code-row">
+<div class="code-val" id="coupon-code">ROLL0000</div>
+<button class="btn-copy" id="copy-btn">📋 Copy</button>
+</div>
+<div class="c-valid">🕐 Koi expiry nahi — hamesha valid</div>
+</div>
+</div>
+</div>
+</div>
+<!-- VISIT STREAK -->
+<div class="sec">🔥 Visit Streak</div>
+<div class="streak-card">
+<div class="streak-top">
+<div>
+<h3 id="streak-title">FREE Item Reward</h3>
+<p id="streak-sub">5 visits pe FREE item!</p>
+</div>
+<div class="s-badge" id="streak-badge">0/5</div>
+</div>
+<div class="dots" id="streak-dots"></div>
+<div class="s-msg" id="streak-msg">Aate raho — reward wait kar raha hai!</div>
+</div>
+<!-- REFERRAL -->
+<div class="sec">👥 Dosto Ko Bulao</div>
+<div class="ref-card">
+<h3>Refer Karo — Points Kamao!</h3>
+<p id="ref-sub">Loading...</p>
+<div class="ref-tiers" id="ref-tiers"></div>
+<button class="btn-ref" id="ref-share-btn">🔗 Referral Link Share Karo</button>
+</div>
+<!-- FEEDBACK -->
+<div class="sec">💬 Help Chahiye?</div>
+<div class="fb-card">
+<div class="fb-note">Owner directly WhatsApp pe respond karega</div>
+<div class="fb-grid">
+<button class="fb-btn" onclick="openSheet('🚨 Complaint')">🚨 Complaint</button>
+<button class="fb-btn" onclick="openSheet('❓ Query')">❓ Query</button>
+<button class="fb-btn" onclick="openSheet('💡 Suggestion')">💡 Suggestion</button>
+<button class="fb-btn" onclick="openSheet('❤️ Compliment')">❤️ Compliment</button>
+</div>
+<div class="fb-foot">WhatsApp pe forward ho jaayega</div>
+</div>
+<button class="btn-logout-full" onclick="window._dashLogout()">← Logout Karein</button>
+<div class="powered" style="margin-top:16px">the khati roll hub </div>
+</div>
+
+<!-- ══ QR SCREEN ══════════════════════════════════════════════ -->
+<div id="qr-screen">
+  <div class="qr-top-label">Mera QR Code</div>
+  <div class="qr-card">
+    <div class="qr-logo">KATHI ROLL HUB</div>
+    <div class="qr-member-name" id="qr-name">...</div>
+    <div id="qr-canvas-wrap"></div>
+    <div class="qr-stats">
+      <div class="qr-stat">
+        <div class="qr-stat-val" id="qr-pts">0</div>
+        <div class="qr-stat-lbl">⭐ Points</div>
+      </div>
+      <div class="qr-stat">
+        <div class="qr-stat-val" id="qr-visits">0</div>
+        <div class="qr-stat-lbl">🏆 Visits</div>
+      </div>
+    </div>
+  </div>
+  <div class="qr-hint">
+    📲 Yeh QR code counter pe dikhao<br/>
+    Admin scan karega aur bill ready ho jaayega!
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══════════════════════════════════════════════ -->
+<nav class="bottom-nav">
+  <div class="bn-item active" id="bn-home" onclick="showTab('home')">
+    <span class="bn-icon">🏠</span>
+    <span class="bn-label">Home</span>
+  </div>
+  <div class="bn-item" id="bn-menu" onclick="showTab('menu')">
+    <span class="bn-icon">🍽️</span>
+    <span class="bn-label">Menu</span>
+  </div>
+  <div class="bn-item" id="bn-qr" onclick="showTab('qr')">
+    <span class="bn-icon">📱</span>
+    <span class="bn-label">My QR</span>
+  </div>
+  <div class="bn-item" id="bn-profile" onclick="showTab('profile')">
+    <span class="bn-icon">👤</span>
+    <span class="bn-label">Profile</span>
+  </div>
+</nav>
+
+
+<!-- ══ PROFILE SCREEN ══════════════════════════════════════ -->
+<div id="profile-screen">
+  <div class="profile-header">
+    <div class="profile-avatar">👤</div>
+    <div class="profile-name-big" id="prf-name-big">...</div>
+    <div class="profile-mobile" id="prf-mobile"></div>
+  </div>
+
+  <!-- Naam Edit -->
+  <div class="profile-card">
+    <div class="profile-card-title">👤 Meri Details</div>
+    <div class="profile-row">
+      <div class="profile-row-left">
+        <span class="profile-row-icon">✏️</span>
+        <span class="profile-row-label">Naam</span>
+      </div>
+    </div>
+
+    <!-- DOB -->
+    <div class="profile-row">
+      <div class="profile-row-left">
+        <span class="profile-row-icon">🎂</span>
+        <div>
+          <div class="profile-row-label">Birthday</div>
+          <div style="font-size:11px;color:#bbb;font-weight:600">Birthday pe special offer!</div>
+        </div>
+      </div>
+      <span class="profile-row-value" id="prf-dob-val">Add karo</span>
+    </div>
+    <div id="dob-edit-wrap" style="display:none">
+      <input class="profile-inp" type="date" id="prf-dob-inp"/>
+      <button class="profile-save-btn" onclick="saveDob()">🎂 Birthday Save Karo</button>
+    </div>
+    <div id="dob-add-wrap-btn" style="text-align:right;margin-top:4px">
+      <button class="profile-edit-btn" onclick="toggleDobEdit()" id="dob-add-btn">
+        🎂 Birthday Add Karo
+      </button>
+    </div>
+  </div>
+
+  <!-- Instagram -->
+  <div class="profile-card">
+    <div class="profile-card-title">📸 Social Media</div>
+    <div class="profile-row">
+      <div class="profile-row-left">
+        <span class="profile-row-icon">📸</span>
+        <div>
+          <div class="profile-row-label">Instagram Follow Karo</div>
+          <div style="font-size:11px;color:#bbb;font-weight:600">Follow karo — 50 bonus points milenge!</div>
+        </div>
+      </div>
+      <span class="insta-done-badge" id="insta-done" style="display:none">✅ Done</span>
+    </div>
+    <button class="insta-btn" id="insta-btn" onclick="doInstaFollow()">
+      📸 Instagram Follow Karo
+    </button>
+  </div>
+
+  <!-- Favourite Items -->
+  <div class="profile-card">
+    <div class="profile-card-title">⭐ Meri Favourite Items</div>
+    <div id="prf-favs" style="font-size:13px;color:#bbb;font-weight:600;text-align:center;padding:12px">
+      Bill ke baad yahan dikhenge!
+    </div>
+  </div>
+
+  <button class="btn-logout-full" onclick="window._dashLogout()" style="margin-top:8px">← Logout Karein</button>
+</div>
+
+<!-- ══ FEEDBACK BOTTOM SHEET ══════════════════════════════ -->
+<div class="sheet-ov" id="sheet-ov" onclick="if(event.target===this)closeSheet()">
+<div class="sheet-box">
+<div class="sh-handle"></div>
+<div class="sh-h3" id="sh-title">Complaint</div>
+<div class="sh-p">Apni baat likhein — seedha owner tak jaayegi</div>
+<textarea class="sh-ta" id="sh-txt" placeholder="Yahan likhein..."></textarea>
+<div class="sh-btns">
+<button class="sh-cancel" onclick="closeSheet()">Cancel</button>
+<button class="sh-send" onclick="sendFeedback()">📤 WhatsApp pe Bhejo</button>
+</div>
+</div>
+</div>
+<script type="module">
+import {
+initDashboard, handleLogout
+} from './js/dashboard.js';
+import { SHOP, LS } from '../shared/constants.js';
+document.addEventListener('DOMContentLoaded', () => {
+initDashboard();
+});
+window._dashLogout = handleLogout;
+let fbType = '';
+window.openSheet = function(type) {
+fbType = type;
+document.getElementById('sh-title').textContent = type;
+document.getElementById('sh-txt').value = '';
+document.getElementById('sheet-ov').classList.add('open');
+setTimeout(() => document.getElementById('sh-txt').focus(), 350);
+};
+window.closeSheet = function() {
+document.getElementById('sheet-ov').classList.remove('open');
+};
+window.sendFeedback = function() {
+const txt = document.getElementById('sh-txt').value.trim();
+if (!txt) { document.getElementById('sh-txt').focus(); return; }
+const mob = localStorage.getItem(LS.current) || '';
+const users= JSON.parse(localStorage.getItem(LS.users) || '[]');
+const user = users.find(u => u.mobile === mob);
+const name = user?.name || 'Customer';
+const wa = SHOP.whatsapp;
+const fbs = JSON.parse(localStorage.getItem('krh_feedback') || '[]');
+fbs.unshift({ type:fbType, name, mobile:mob, msg:txt, time:new Date().toISOString() });
+localStorage.setItem('krh_feedback', JSON.stringify(fbs));
+const msg = encodeURIComponent(
+`*${fbType}* — ${SHOP.name}\n\n*Customer:* ${name} (${mob})\n*Message:* ${txt}`
+);
+window.open(`https://wa.me/${wa}?text=${msg}`, '_blank');
+window.closeSheet();
+};
+
+  // ══ QR CODE + BOTTOM NAV ═══════════════════════════════════
+  const _qrScript = document.createElement('script');
+  _qrScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+  document.head.appendChild(_qrScript);
+  let _qrDone = false;
+
+  window.showTab = function(tab) {
+    const body   = document.querySelector('.body');
+    const hero   = document.getElementById('dash-hero');
+    const qrScr  = document.getElementById('qr-screen');
+    ['bn-home','bn-menu','bn-qr','bn-help'].forEach(t => {
+      const el = document.getElementById(t);
+      if (el) el.classList.remove('active');
+    });
+    const prfScr = document.getElementById('profile-screen');
+
+    if (tab === 'qr') {
+      if (body) body.style.display = 'none';
+      if (hero) hero.style.display = 'none';
+      if (qrScr) qrScr.classList.add('active');
+      if (prfScr) prfScr.classList.remove('active');
+      document.getElementById('bn-qr').classList.add('active');
+      _genQR();
+    } else if (tab === 'profile') {
+      if (body) body.style.display = 'none';
+      if (hero) hero.style.display = 'none';
+      if (qrScr) qrScr.classList.remove('active');
+      if (prfScr) prfScr.classList.add('active');
+      document.getElementById('bn-profile').classList.add('active');
+      _loadProfile();
+    } else {
+      if (body) body.style.display = 'block';
+      if (hero) hero.style.display = 'block';
+      if (qrScr) qrScr.classList.remove('active');
+      if (prfScr) prfScr.classList.remove('active');
+      const activeEl = document.getElementById('bn-' + tab);
+      if (activeEl) activeEl.classList.add('active');
+      if (tab === 'menu') {
+        const m = document.getElementById('menu-section');
+        if (m) setTimeout(() => m.scrollIntoView({ behavior:'smooth' }), 100);
+      } else {
+        window.scrollTo({ top:0, behavior:'smooth' });
+      }
+    }
+  };
+
+  function _genQR() {
+    if (_qrDone) return;
+    const mob    = localStorage.getItem(LS.current) || '';
+    const users  = JSON.parse(localStorage.getItem(LS.users) || '[]');
+    const user   = users.find(u => u.mobile === mob) || {};
+    const name   = user.name   || document.getElementById('dash-name')?.textContent || 'Member';
+    const pts    = user.points !== undefined ? user.points : (document.getElementById('dash-pts')?.textContent || '0');
+    const visits = user.visits !== undefined ? user.visits : (document.getElementById('stat-visits')?.textContent || '0');
+    const qnEl = document.getElementById('qr-name');
+    const qpEl = document.getElementById('qr-pts');
+    const qvEl = document.getElementById('qr-visits');
+    if (qnEl) qnEl.textContent = name;
+    if (qpEl) qpEl.textContent = pts;
+    if (qvEl) qvEl.textContent = visits;
+    if (!mob) return;
+    const wrap = document.getElementById('qr-canvas-wrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    const tryQR = () => {
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(wrap, {
+          text: 'KRH:' + mob,
+          width: 220, height: 220,
+          colorDark: '#1a1a1a', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        _qrDone = true;
+      } else {
+        setTimeout(tryQR, 400);
+      }
+    };
+    tryQR();
+  }
+
+
+  // ══ PROFILE TAB ══════════════════════════════════════════
+  function _loadProfile() {
+    const mob   = localStorage.getItem(LS.current) || '';
+    const users = JSON.parse(localStorage.getItem(LS.users) || '[]');
+    const user  = users.find(u => u.mobile === mob) || {};
+    const name  = user.name || document.getElementById('dash-name')?.textContent || '';
+
+    // Update profile header
+    const pnb = document.getElementById('prf-name-big');
+    const pm  = document.getElementById('prf-mobile');
+    if (pnb) pnb.textContent = name;
+    if (pm)  pm.textContent  = mob ? '+91 ' + mob : '';
+
+    // DOB
+    const dobVal = document.getElementById('prf-dob-val');
+    const dobInp = document.getElementById('prf-dob-inp');
+    const dobBtn = document.getElementById('dob-btn-text');
+    if (user.dob) {
+      const d = new Date(user.dob);
+      if (dobVal) dobVal.textContent = d.toLocaleDateString('en-IN',{day:'2-digit',month:'long'});
+      // DOB already added — hide add button, hide edit wrap
+      const addBtn = document.getElementById('dob-add-wrap-btn');
+      if (addBtn) addBtn.style.display = 'none';
+      const editWrap = document.getElementById('dob-edit-wrap');
+      if (editWrap) editWrap.style.display = 'none';
+    }
+
+    // Instagram
+    const instaDone = document.getElementById('insta-done');
+    const instaBtn  = document.getElementById('insta-btn');
+    if (user.socialDone) {
+      if (instaDone) instaDone.style.display = 'inline-flex';
+      if (instaBtn)  instaBtn.style.display  = 'none';
+    }
+
+    // Favourites from bills (top items)
+    const bills = JSON.parse(localStorage.getItem(LS.bills) || '[]');
+    const myBills = bills.filter(b => b.mobile === mob);
+    const itemCount = {};
+    myBills.forEach(b => {
+      if (b.items) b.items.forEach(it => {
+        itemCount[it.name] = (itemCount[it.name]||0) + it.qty;
+      });
+    });
+    const favs = Object.entries(itemCount)
+      .sort((a,b) => b[1]-a[1]).slice(0,5);
+    const favEl = document.getElementById('prf-favs');
+    if (favs.length && favEl) {
+      favEl.innerHTML = favs.map(([name,qty]) =>
+        `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px;font-weight:700;color:#1a1a1a">
+          <span>🌯 ${name}</span>
+          <span style="color:#bbb">${qty} baar</span>
+        </div>`
+      ).join('');
+    }
+  }
+
+  // Naam edit disabled — naam registration pe hi set hota hai
+
+  window.toggleDobEdit = function() {
+    const wrap = document.getElementById('dob-edit-wrap');
+    wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.saveDob = async function() {
+    const dob = document.getElementById('prf-dob-inp').value;
+    if (!dob) return;
+    const mob   = localStorage.getItem(LS.current) || '';
+    const users = JSON.parse(localStorage.getItem(LS.users) || '[]');
+    const idx   = users.findIndex(u => u.mobile === mob);
+    if (idx !== -1) { users[idx].dob = dob; localStorage.setItem(LS.users, JSON.stringify(users)); }
+    try {
+      const { db, doc, updateDoc } = await import('../shared/firebase-config.js');
+      await updateDoc(doc(db, 'users', mob), { dob });
+    } catch(e) { console.warn('DOB update failed:', e); }
+    const d = new Date(dob);
+    document.getElementById('prf-dob-val').textContent = d.toLocaleDateString('en-IN',{day:'2-digit',month:'long'});
+    document.getElementById('dob-edit-wrap').style.display = 'none';
+    // Hide add button permanently
+    const addBtn = document.getElementById('dob-add-wrap-btn');
+    if (addBtn) addBtn.style.display = 'none';
+    alert('🎂 Birthday save ho gaya! Ab birthday pe special offer milega!');
+  };
+
+  window.doInstaFollow = async function() {
+    const mob   = localStorage.getItem(LS.current) || '';
+    // Open Instagram
+    window.open('https://www.instagram.com/the_kathi_roll_hub_murlipuraa', '_blank');
+    // Mark done + add points
+    setTimeout(async () => {
+      const users = JSON.parse(localStorage.getItem(LS.users) || '[]');
+      const idx   = users.findIndex(u => u.mobile === mob);
+      if (idx !== -1 && !users[idx].socialDone) {
+        users[idx].socialDone = true;
+        users[idx].points = (users[idx].points || 0) + 50;
+        localStorage.setItem(LS.users, JSON.stringify(users));
+        try {
+          const { db, doc, updateDoc } = await import('../shared/firebase-config.js');
+          await updateDoc(doc(db, 'users', mob), { socialDone: true, points: users[idx].points });
+        } catch(e) { console.warn('Social update failed:', e); }
+        document.getElementById('insta-done').style.display = 'inline-flex';
+        document.getElementById('insta-btn').style.display  = 'none';
+        alert('🎉 +50 Points mile! Instagram follow ke liye shukriya!');
+      }
+    }, 2000);
+  };
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

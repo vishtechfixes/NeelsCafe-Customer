@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Join Loyalty Club — Kathi Roll Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/customer.css"/>
+<style>
+body { background:var(--cream); color:#1a1a1a; padding-bottom:100px; display:block; min-height:100svh; }
+.reg-header { background:var(--black); padding:16px 18px 36px; position:relative; overflow:hidden; }
+.reg-header::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(255,255,255,0.012) 28px,rgba(255,255,255,0.012) 29px); pointer-events:none; }
+.reg-header::after { content:''; position:absolute; bottom:-20px; left:0; right:0; height:40px; background:var(--cream); border-radius:50% 50% 0 0/100% 100% 0 0; }
+.reg-header-inner { position:relative; z-index:1; }
+.reg-header-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.back-link { color:#555; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+.back-link:hover { color:#fff; }
+.free-tag { font-size:11px; font-weight:800; color:#333; letter-spacing:0.06em; }
+.reg-header h1 { font-family:var(--font-hd); font-size:28px; color:var(--yellow); line-height:1; margin-bottom:5px; }
+.reg-header p { font-size:13px; color:#555; font-weight:600; }
+.progress-wrap { max-width:480px; margin:0 auto; padding:20px 16px 0; }
+.progress-bar { display:flex; align-items:center; margin-bottom:8px; }
+.step-dot { width:32px; height:32px; border-radius:50%; background:#e8e8e8; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#bbb; flex-shrink:0; transition:all 0.3s; }
+.step-dot.active { background:var(--red); color:#fff; }
+.step-dot.done { background:var(--green,#22c55e); color:#fff; }
+.step-line { flex:1; height:3px; background:#e8e8e8; transition:background 0.3s; }
+.step-line.done { background:var(--green,#22c55e); }
+.step-labels { display:flex; justify-content:space-between; margin-bottom:20px; }
+.step-label { font-size:10px; font-weight:800; color:#bbb; text-transform:uppercase; letter-spacing:0.06em; text-align:center; flex:1; }
+.step-label.active { color:var(--red); }
+.step-label.done { color:var(--green,#22c55e); }
+.form-wrap { max-width:480px; margin:0 auto; padding:0 16px; }
+.step-screen { display:none; }
+.step-screen.active { display:block; }
+.field { margin-bottom:16px; }
+.field label { font-size:11px; font-weight:800; color:#777; text-transform:uppercase; letter-spacing:0.07em; display:block; margin-bottom:7px; }
+.field label .req { color:var(--red); }
+.field .hint { font-size:11.5px; color:#bbb; font-weight:600; margin-top:5px; }
+.inp-light { width:100%; background:#fff; border:1.5px solid #e8e8e8; border-radius:12px; color:#1a1a1a; font-family:var(--font); font-size:16px; font-weight:600; padding:13px 16px; outline:none; transition:border-color 0.15s,box-shadow 0.15s; -webkit-appearance:none; appearance:none; box-sizing:border-box; }
+.inp-light:focus { border-color:var(--yellow); box-shadow:0 0 0 3px rgba(255,214,0,0.12); }
+.inp-light::placeholder { color:#ccc; font-weight:400; }
+.inp-light.ok { border-color:var(--green,#22c55e); }
+.inp-light.err { border-color:var(--red); }
+.err-box { background:#fff0f0; border:1.5px solid #ffc5c5; border-radius:12px; color:var(--red); font-size:13px; font-weight:700; padding:12px 14px; margin-bottom:16px; display:none; }
+.step-title { font-family:var(--font-hd); font-size:22px; color:#1a1a1a; margin-bottom:6px; }
+.step-sub { font-size:13px; color:#999; font-weight:600; margin-bottom:20px; }
+.otp-boxes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.otp-box {
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 64px;
+  border: 2px solid #e8e8e8;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  color: #1a1a1a;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.otp-box:focus {
+  border-color: var(--yellow, #FFD600);
+  box-shadow: 0 0 0 3px rgba(255,214,0,0.15);
+}
+.otp-box.ok {
+  border-color: var(--green, #22c55e);
+  background: #f0fdf4;
+}
+.pin-wrap { position:relative; }
+.pin-wrap .inp-light { text-align:center; letter-spacing:8px; font-weight:800; font-size:20px; padding-right:46px; }
+.pin-eye { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:18px; padding:4px; }
+.submit-bar { position:fixed; bottom:0; left:0; right:0; background:linear-gradient(to top,var(--cream) 70%,transparent); padding:12px 16px 32px; z-index:50; }
+.btn-submit { width:100%; max-width:480px; margin:0 auto; display:flex; background:var(--red); color:#fff; font-family:var(--font); font-size:17px; font-weight:800; padding:17px 20px; border:none; border-radius:16px; cursor:pointer; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 20px rgba(229,34,42,0.3); transition:transform 0.12s; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+.btn-submit:active { transform:scale(0.98); }
+.btn-submit:disabled { opacity:0.7; pointer-events:none; }
+.link-btn { background:none; border:none; color:var(--red); font-weight:800; text-decoration:underline; cursor:pointer; font-size:12px; padding:0; font-family:var(--font); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="reg-header">
+  <div class="reg-header-inner">
+    <div class="reg-header-top">
+      <a href="index.html" class="back-link">← Wapas</a>
+      <span class="free-tag">FREE · Forever</span>
+    </div>
+    <h1>JOIN LOYALTY CLUB</h1>
+    <p>Register karo — 10% OFF turant milega!</p>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-bar">
+    <div class="step-dot active" id="dot-1">1</div>
+    <div class="step-line" id="line-1"></div>
+    <div class="step-dot" id="dot-2">2</div>
+    <div class="step-line" id="line-2"></div>
+    <div class="step-dot" id="dot-3">3</div>
+  </div>
+  <div class="step-labels">
+    <span class="step-label active" id="lbl-1">Details</span>
+    <span class="step-label" id="lbl-2">OTP</span>
+    <span class="step-label" id="lbl-3">PIN</span>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+  <div class="err-box" id="err-box"></div>
+
+  <!-- STEP 1 -->
+  <div class="step-screen active" id="step-1">
+    <div class="step-title">👋 Apna Naam batao</div>
+    <div class="step-sub">Mobile number pe OTP aayega</div>
+    <div class="field">
+      <label>Pura Naam <span class="req">*</span></label>
+      <input class="inp-light" type="text" id="f-name"
+        placeholder="Aapka naam..." autocomplete="name"
+        oninput="clearErr()"/>
+    </div>
+    <div class="field">
+      <label>Mobile Number <span class="req">*</span></label>
+      <input class="inp-light" type="tel" id="f-mob"
+        maxlength="10" placeholder="9876543210"
+        inputmode="numeric" oninput="clearErr()"/>
+      <p class="hint">Is number pe OTP aayega</p>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-screen" id="step-2">
+    <div class="step-title">📱 OTP Verify karo</div>
+    <div class="step-sub" id="otp-sub">OTP bheja gaya aapke number pe</div>
+    <div class="otp-boxes">
+      <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp-0" oninput="otpInput(0)" onkeydown="otpKey(event,0)"/>
+      <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp-1" oninput="otpInput(1)" onkeydown="otpKey(event,1)"/>
+      <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp-2" oninput="otpInput(2)" onkeydown="otpKey(event,2)"/>
+      <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp-3" oninput="otpInput(3)" onkeydown="otpKey(event,3)"/>
+    </div>
+    <p class="hint" id="otp-resend-hint"></p>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-screen" id="step-3">
+    <div class="step-title">🔐 Apna PIN banao</div>
+    <div class="step-sub">4-digit PIN — agli baar isi se login hoga!</div>
+    <div class="field">
+      <label>4-Digit PIN <span class="req">*</span></label>
+      <div class="pin-wrap">
+        <input class="inp-light" type="password" id="f-pin"
+          maxlength="4" placeholder="••••" inputmode="numeric" oninput="clearErr()"/>
+        <button type="button" class="pin-eye" onclick="togglePin('f-pin',this)">👁️</button>
+      </div>
+      <p class="hint">Agli baar OTP ki zaroorat nahi — sirf PIN!</p>
+    </div>
+    <div class="field">
+      <label>PIN Dobara Likho <span class="req">*</span></label>
+      <div class="pin-wrap">
+        <input class="inp-light" type="password" id="f-pin2"
+          maxlength="4" placeholder="••••" inputmode="numeric" oninput="clearErr()"/>
+        <button type="button" class="pin-eye" onclick="togglePin('f-pin2',this)">👁️</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="powered" style="margin-top:30px">the kathi roll hub</div>
+</div>
+
+<!-- FIXED BUTTON -->
+<div class="submit-bar">
+  <button class="btn-submit" id="submit-btn" onclick="handleStep()">
+    OTP Bhejo →
+  </button>
+</div>
+
+<script type="module">
+import { registerUser, sendOtpToMobile, verifyOtpCode, setUserPin } from './js/auth.js';
+import { LS } from '../shared/constants.js';
+
+// Already logged in?
+const cur = localStorage.getItem(LS.current);
+if (cur) {
+  const users = JSON.parse(localStorage.getItem(LS.users) || '[]');
+  if (users.find(u => u.mobile === cur)) window.location.href = 'dashboard.html';
+}
+
+let currentStep    = 1;
+let mobileVerified = false;
+let verifiedMobile = '';
+let resendTimer    = null;
+
+function setStep(n) {
+  currentStep = n;
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('dot-' + i);
+    const lbl = document.getElementById('lbl-' + i);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active','done');
+    if (i < n)       { dot.classList.add('done'); dot.textContent='✓'; lbl.classList.add('done'); }
+    else if (i === n){ dot.classList.add('active'); dot.textContent=i; lbl.classList.add('active'); }
+    else              { dot.textContent=i; }
+  }
+  for (let i = 1; i <= 2; i++) {
+    document.getElementById('line-'+i).classList.toggle('done', i < n);
+  }
+  document.querySelectorAll('.step-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-'+n).classList.add('active');
+  const btn = document.getElementById('submit-btn');
+  if (n === 1)      btn.textContent = 'OTP Bhejo →';
+  else if (n === 2) btn.textContent = 'OTP Verify Karo →';
+  else              btn.textContent = '🎁 Register & Get Discount';
+  clearErr();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+window.otpInput = function(idx) {
+  const el = document.getElementById('otp-'+idx);
+  el.value = el.value.replace(/\D/g,'');
+  if (el.value && idx < 3) document.getElementById('otp-'+(idx+1)).focus();
+  clearErr();
+};
+window.otpKey = function(e, idx) {
+  if (e.key==='Backspace' && !document.getElementById('otp-'+idx).value && idx>0)
+    document.getElementById('otp-'+(idx-1)).focus();
+};
+function getOtp() { return [0,1,2,3].map(i=>document.getElementById('otp-'+i).value).join(''); }
+
+window.togglePin = function(id, btn) {
+  const inp = document.getElementById(id);
+  if (inp.type==='password'){ inp.type='text'; btn.textContent='🙈'; }
+  else { inp.type='password'; btn.textContent='👁️'; }
+};
+
+function startResendTimer(mob) {
+  let sec = 30;
+  const hint = document.getElementById('otp-resend-hint');
+  if (resendTimer) clearInterval(resendTimer);
+  hint.textContent = `Dobara bhejne ke liye ${sec}s wait karo`;
+  resendTimer = setInterval(() => {
+    sec--;
+    if (sec <= 0) {
+      clearInterval(resendTimer);
+      hint.innerHTML = `OTP nahi mila? <button class="link-btn" onclick="resendOtp()">Dobara bhejo</button>`;
+    } else {
+      hint.textContent = `Dobara bhejne ke liye ${sec}s wait karo`;
+    }
+  }, 1000);
+}
+
+window.resendOtp = async function() {
+  const mob = document.getElementById('f-mob').value.trim();
+  const res = await sendOtpToMobile(mob);
+  if (res.success) {
+    startResendTimer(mob);
+    [0,1,2,3].forEach(i => { document.getElementById('otp-'+i).value=''; });
+    document.getElementById('otp-0').focus();
+  } else {
+    showErr(res.message || 'OTP bhejne mein dikkat');
+  }
+};
+
+window.handleStep = async function() {
+  const btn = document.getElementById('submit-btn');
+
+  if (currentStep === 1) {
+    const name = document.getElementById('f-name').value.trim();
+    const mob  = document.getElementById('f-mob').value.trim();
+    if (!name)                        { showErr('Naam zaroor dalein.'); return; }
+    if (mob.length!==10||isNaN(mob))  { showErr('Sahi 10-digit mobile number dalein.'); return; }
+
+    btn.disabled=true; btn.textContent='⏳ OTP bhej raha hoon...';
+    const res = await sendOtpToMobile(mob);
+    btn.disabled=false;
+
+    if (!res.success) {
+      setStep(1);
+      showErr(res.message || 'OTP bhejne mein dikkat. Dobara try karo.');
+      return;
+    }
+    document.getElementById('otp-sub').textContent = `OTP bheja gaya: +91 ${mob.slice(0,5)}XXXXX`;
+    startResendTimer(mob);
+    setStep(2);
+    setTimeout(() => document.getElementById('otp-0').focus(), 300);
+
+  } else if (currentStep === 2) {
+    const otp = getOtp();
+    const mob = document.getElementById('f-mob').value.trim();
+    if (otp.length!==4) { showErr('4-digit OTP dalein.'); return; }
+
+    btn.disabled=true; btn.textContent='⏳ Verify ho raha hai...';
+    const res = await verifyOtpCode(mob, otp);
+    btn.disabled=false;
+
+    if (!res.success) { showErr(res.message || '❌ Galat ya expired OTP.'); return; }
+
+    mobileVerified=true; verifiedMobile=mob;
+    if (resendTimer) clearInterval(resendTimer);
+    [0,1,2,3].forEach(i => document.getElementById('otp-'+i).classList.add('ok'));
+    setStep(3);
+
+  } else if (currentStep === 3) {
+    const pin  = document.getElementById('f-pin').value.trim();
+    const pin2 = document.getElementById('f-pin2').value.trim();
+    const name = document.getElementById('f-name').value.trim();
+    const mob  = document.getElementById('f-mob').value.trim();
+
+    if (pin.length!==4||isNaN(pin)) { showErr('4-digit PIN banayein.'); return; }
+    if (pin!==pin2)                  { showErr('Dono PIN match nahi ho rahe.'); return; }
+    if (!mobileVerified||verifiedMobile!==mob) { showErr('Mobile verify nahi hua.'); return; }
+
+    btn.disabled=true; btn.textContent='⏳ Register ho raha hai...';
+
+    const userData = {
+      name, mobile:mob, dob:'', area:'', anniversary:'',
+      specialDay:'', favItems:[], occasions:[],
+      referredBy: sessionStorage.getItem('krh_ref')||'',
+      joined: new Date().toISOString(),
+      visits:0, points:200, saved:0, referrals:0, dashVisited:false,
+    };
+
+    try {
+      const result = await registerUser(userData);
+      if (result.success) {
+        await setUserPin(mob, pin);
+        sessionStorage.removeItem('krh_ref');
+        window.location.href = 'dashboard.html'; // SEEDHA DASHBOARD!
+      } else {
+        showErr(result.message || 'Kuch gadbad ho gayi. Try karo.');
+        btn.disabled=false; btn.textContent='🎁 Register & Get Discount';
+      }
+    } catch(err) {
+      showErr('Network error. Internet check karo.');
+      btn.disabled=false; btn.textContent='🎁 Register & Get Discount';
+    }
+  }
+};
+
+function showErr(msg) {
+  const el = document.getElementById('err-box');
+  el.textContent='⚠️ '+msg; el.style.display='block';
+  el.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+window.clearErr = function() {
+  document.getElementById('err-box').style.display='none';
+};
+
+setStep(1);
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
