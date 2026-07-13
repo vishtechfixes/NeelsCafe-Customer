@@ -1,44 +1,44 @@
 // ============================================================
-//  shared/constants.js
-//  Naye shop ke liye SIRF YEH FILE BADLO
-//  Admin aur Customer dono yahan se import karte hain
+//  shared/constants.js — Neel's Cafe
+//  Admin aur Customer DONO mein yeh same file rakho
 // ============================================================
 
 export const SHOP = {
   id:           "neels-cafe",
-  name:         "Neels Cafe",
+  name:         "Neel's Cafe",
   tagline:      "We Serve Taste & Trust",
-  location:     " Jaipur",
-  logoEmoji:    "🌯",
-  primaryColor: "#FFD600",
-  accentColor:  "#E5222A",
+  location:     "Jaipur",
+  logoEmoji:    "👨‍🍳",
+  primaryColor: "#1B2A6B",
+  accentColor:  "#E8A020",
 
-  whatsapp:     "918005977273",
-  instagram:    "https://www.instagram.com/ne",
-  zomato:       "https://www.zomato.com/jaipur/nel ",
-  googleReview: "https://m",
+  whatsapp:     "919950209314",
+  instagram:    "",
+  zomato:       "",
+  googleReview: "",
+  appLink:      "https://neels.vishtechfixes.com",
 };
 
 // ── ADMIN ──────────────────────────────────────────────────
 export const ADMIN = {
-  defaultPassword: "krh2025",
+  defaultPassword: "nc2025",
 };
 
 // ── POINTS CONFIG ───────────────────────────────────────────
 export const POINTS = {
-  welcome:       0,
-  perVisit:      1,
-  instagram:     2,
-  googleReview:  2,
-  whatsapp:      2,
-  zomato:        2,
+  welcome:       200,
+  perVisit:      5,
+  instagram:     25,
+  googleReview:  30,
+  whatsapp:      20,
+  zomato:        20,
 };
 
 // ── OFFER DEFAULTS ──────────────────────────────────────────
 export const DEFAULTS = {
   welcomeDiscPct:  10,
   visitGoal:       5,
-  visitReward:     "FREE Roll ya Momos",
+  visitReward:     "FREE Ice Cream ya Cold Coffee",
   refSteps:        [50, 120, 200],
   winbackDays:     30,
   lowStockAlert:   5,
@@ -47,22 +47,29 @@ export const DEFAULTS = {
 
 // ── COUPON PREFIXES ─────────────────────────────────────────
 export const COUPON = {
-  welcome:  "ROLL",
-  birthday: "BDAY",
-  visit:    "VIS",
-  special:  "SPEC",
+  welcome:  "NC",
+  birthday: "NCBDAY",
+  visit:    "NCVIS",
+  special:  "NCSPEC",
 };
 
 // ── MENU CATEGORIES ─────────────────────────────────────────
 export const CATEGORIES = [
-  "Kathi Roll",
+  "Ice Cream",
+  "Patties",
+  "Chaat Items",
+  "Pasta",
+  "Hot Drinks",
+  "Pizza",
+  "Burger",
+  "Sandwich",
   "Momos",
-  "Chinese",
+  "Meggie",
   "Shake",
   "Coffee",
-  "Snacks",
-  "Dessert",
-  "Other",
+  "Fast Food",
+  "Cake",
+  "Combos",
 ];
 
 // ── FIRESTORE COLLECTION NAMES ──────────────────────────────
@@ -77,13 +84,23 @@ export const COLLECTIONS = {
 
 // ── LOCALSTORAGE KEYS (offline fallback) ────────────────────
 export const LS = {
-  users:    "krh_users",
-  bills:    "krh_bills",
-  menu:     "krh_menu",
-  settings: "krh_settings",
-  shop:     "krh_shop",
-  feedback: "krh_feedback",
-  theme:    "krh_theme",
-  adminPw:  "krh_admin_pass",
-  current:  "krh_current",
+  users:    "nc_users",
+  bills:    "nc_bills",
+  menu:     "nc_menu",
+  settings: "nc_settings",
+  shop:     "nc_shop",
+  feedback: "nc_feedback",
+  theme:    "nc_theme",
+  adminPw:  "nc_admin_pass",
+  current:  "nc_current",
 };
+
+
+
+
+
+
+
+
+
+
