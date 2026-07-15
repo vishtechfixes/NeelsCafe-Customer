@@ -678,10 +678,11 @@ const mob = localStorage.getItem(LS.current) || '';
 const users= JSON.parse(localStorage.getItem(LS.users) || '[]');
 const user = users.find(u => u.mobile === mob);
 const name = user?.name || 'Customer';
-const wa = SHOP.whatsapp;
-const fbs = JSON.parse(localStorage.getItem('krh_feedback') || '[]');
+const shopInfo = JSON.parse(localStorage.getItem('nc_shop') || '{}');
+const wa = shopInfo.waNumber || SHOP.whatsapp;
+const fbs = JSON.parse(localStorage.getItem('nc_feedback') || '[]');
 fbs.unshift({ type:fbType, name, mobile:mob, msg:txt, time:new Date().toISOString() });
-localStorage.setItem('krh_feedback', JSON.stringify(fbs));
+localStorage.setItem('nc_feedback', JSON.stringify(fbs));
 const msg = encodeURIComponent(
 `*${fbType}* — ${SHOP.name}\n\n*Customer:* ${name} (${mob})\n*Message:* ${txt}`
 );
