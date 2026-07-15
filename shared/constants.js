@@ -16,7 +16,7 @@ export const SHOP = {
   instagram:    "",
   zomato:       "",
   googleReview: "",
-  appLink:      "https://neels.vishtechfixes.com",
+  appLink:      " https://neelscafe-customers.vishtechfixes.com/",
 };
 
 // ── ADMIN ──────────────────────────────────────────────────
