@@ -12,7 +12,7 @@ export const SHOP = {
   primaryColor: "#1B2A6B",
   accentColor:  "#E8A020",
 
-  whatsapp:     "919950209314",
+  whatsapp:     "918005977273",
   instagram:    "",
   zomato:       "",
   googleReview: "",
